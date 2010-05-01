@@ -10,9 +10,9 @@ public:
 virtual void Release();
 virtual void System_Start();
 virtual void System_SetFunc(bluCallback func, bluFunc fblu);
-virtual void GFX_Initiate(bluGfx bgfx);
-virtual u16* GFX_LDSprite(bluSprite bsp);
-virtual void GFX_BltSpr(u16* p_gfx);
+virtual void GFX_Initiate();
+virtual void GFX_LDSprite(bluSprite* bsp);
+virtual void GFX_BltSpr(bluSprite* bsp);
 
 
 //impl specific funcs

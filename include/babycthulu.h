@@ -8,6 +8,12 @@
 typedef bool (*bluCallback)();
 
 struct bluSprite{
+int x;
+int y;
+int fps;
+int id;
+int priority;
+unsigned short* gfx;
 const unsigned int* tiles;
 const unsigned short* pal;
 unsigned int tlen;
@@ -22,9 +28,8 @@ BLUFRAMFUNC = 0,
 BLURENDFUNC = 1
 };
 
-enum bluGfx{
-BLU2DSPRITE = 7,
-BLU3DTEX = 8
+struct bluBG{
+
 };
 
 class bcthulu{
@@ -32,9 +37,9 @@ public:
 virtual void Release() = 0;
 virtual void System_Start() = 0;
 virtual void System_SetFunc(bluCallback func, bluFunc fblu) = 0;
-virtual void GFX_Initiate(bluGfx bgfx) = 0;
-virtual u16* GFX_LDSprite(bluSprite bsp) = 0;
-virtual void GFX_BltSpr(u16* p_gfx) = 0;
+virtual void GFX_Initiate() = 0;
+virtual void GFX_LDSprite(bluSprite* bsp) = 0;
+virtual void GFX_BltSpr(bluSprite* bsp) = 0;
 
 };
 

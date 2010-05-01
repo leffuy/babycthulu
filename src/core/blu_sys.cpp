@@ -40,25 +40,28 @@ if(bluFrameFunc()) break;
 }
 }
 
-void blu_impl::GFX_Initiate(bluGfx bgfx){
+//this function initiates video ram for immediate use with sprites
+//
+void blu_impl::GFX_Initiate(){
 videoSetMode(MODE_0_2D);
-vramSetMainBanks(VRAM_A_MAIN_SPRITE,VRAM_B_LCD,VRAM_C_LCD,VRAM_D_LCD);
+vramSetMainBanks(VRAM_A_MAIN_SPRITE,VRAM_B_MAIN_SPRITE,VRAM_C_LCD,VRAM_D_LCD);
 }
 
-u16* blu_impl::GFX_LDSprite(bluSprite bsp){
+
+void blu_impl::GFX_LDSprite(bluSprite* bsp){
 u16* gfx;
-oamInit(&oamMain, bsp.sm, false);
-gfx = oamAllocateGfx(&oamMain, bsp.sz, bsp.sfmt);
-dmaCopy(bsp.tiles, gfx, bsp.tlen);
-dmaCopy(bsp.pal, SPRITE_PALETTE, bsp.plen);
-return gfx;
+oamInit(&oamMain, bsp->sm, false);
+gfx = oamAllocateGfx(&oamMain, bsp->sz, bsp->sfmt);
+dmaCopy(bsp->tiles, gfx, bsp->tlen);
+dmaCopy(bsp->pal, SPRITE_PALETTE, bsp->plen);
+bsp->gfx = gfx;
 }
 
 
 //update this function first it's the ugliest and most unwieldly
 //maybe add bsprite param?
-void blu_impl::GFX_BltSpr(u16* p_gfx){
-oamSet(&oamMain,0,32,64,0,0,SpriteSize_64x64,SpriteColorFormat_256Color,p_gfx,0,false,false,false,false,false);
+void blu_impl::GFX_BltSpr(bluSprite* bsp){
+oamSet(&oamMain,bsp->id,bsp->x,bsp->y,bsp->priority,0,SpriteSize_64x64,SpriteColorFormat_256Color,bsp->gfx,0,false,false,false,false,false);
 oamUpdate(&oamMain);
 }
 
