@@ -23,6 +23,12 @@ SpriteSize sz;
 SpriteColorFormat sfmt;
 };
 
+struct bluAnimation{
+unsigned short frames;
+unsigned short** palList;
+unsigned int** tileList;
+}
+
 enum bluFunc{
 BLUFRAMFUNC = 0,
 BLURENDFUNC = 1
@@ -40,6 +46,8 @@ virtual void System_SetFunc(bluCallback func, bluFunc fblu) = 0;
 virtual void GFX_Initiate() = 0;
 virtual void GFX_LDSprite(bluSprite* bsp) = 0;
 virtual void GFX_BltSpr(bluSprite* bsp) = 0;
+virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
+
 
 };
 
