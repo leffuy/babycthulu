@@ -28,7 +28,7 @@ struct bluAnimation{
 unsigned short frames;
 const unsigned short** palList;
 const unsigned int** tileList;
-}
+};
 
 enum bluFunc{
 BLUFRAMFUNC = 0,
@@ -50,7 +50,7 @@ virtual void GFX_Initiate() = 0;
 virtual void GFX_LDSprite(bluSprite* bsp) = 0;
 virtual void GFX_BltSpr(bluSprite* bsp) = 0;
 virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
-virtual void GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal);
+virtual int GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal) = 0;
 virtual void GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
 
 };

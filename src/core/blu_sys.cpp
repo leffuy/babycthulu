@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "blu_impl.h"
 
 blu_impl* pblu = 0;
@@ -69,8 +70,8 @@ oamUpdate(&oamMain);
 //creates one frame and points the next frame to itself
 //The tail will always point to the head when you add frames
 void blu_impl::GFX_InitAnimationFrames(bluAnimation* ban, u16 frames){
-ban->palList = new (u16*)[frames];
-ban->tileList = new (u32*)[frames];
+ban->palList = (const u16**)malloc(sizeof(u16*)*frames);
+ban->tileList = (const u32**)malloc(sizeof(u32*)*frames);
 ban->frames = frames;
 }
 
