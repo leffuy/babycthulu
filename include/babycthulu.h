@@ -52,7 +52,7 @@ virtual void GFX_BltSpr(bluSprite* bsp) = 0;
 virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
 virtual int GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal) = 0;
 virtual void GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
-
+virtual void GFX_Init3DDevice() = 0;
 };
 
 extern bcthulu* bluCreate();

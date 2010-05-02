@@ -1,1 +1,20 @@
 Baby Cthulu is an abstraction interface and management engine.
+
+Throw the .cpp's in tests into a template devkit working project and you'll have
+for one of them you'll need a copy of the data files to serve as test sprites.
+
+The 3D tests show the currently limited functionality of the engine.
+
+Sprite capabilities are pretty solid. Multiple sprites of varying sizes can be:
+ *Blitted anywhere on the screen
+ *Have Alpha channels and such
+ *Be animated
+ *Stopped
+
+I will add more functionality as I think of it. Esepcially while adding BG
+functionality and such. Trying to make the engine compact but useful for users
+in the same way Game Maker was useful in making neat nethack like RPG's. 
+(Man I want to learn to play that game so bad now...)
+
+Anywho. Enjoi what I've got so far. Try out what you can. Break it send in bugs.
+

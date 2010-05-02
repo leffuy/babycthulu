@@ -98,3 +98,52 @@ bsp->frame++;
 }
 
 
+
+//3D graphics implementation utilizes Libnds' GL impl of GFX ports
+//See bottledlight.com this is tricky to use
+
+//PLEASE PLEASE PLEASE read this before using. Or see a demo file.
+/*
+I am trusting libnds 100% on it's implementation of the hardware
+thus below is an abstraction of OpenGL to use as an engine. Unlike traditional
+GPU's the NDS utilizes a multi-core graphics engine, the 3D core runs 
+independently of the 2D engine cores. As such sprites and BG run indpendently.
+The engines are driven by the ARM9 clock. When a screen is in 3D mode it is
+limited to 6000+ something vertices on the screen at once or something. It's
+small, but keep in mind that's around the size of n64. It also has a texturing
+/lighting/rendering engine aside from the geometry engine. This engine maps
+to VIDEO MEMORY for texturing. So as you use 3D and texture, memory available
+to the engine starts decreasing rapidly. BE AWARE OF THAT. THIS IS THE POINT
+OF THAT RANT!  
+*/
+
+
+//This function initializes the device to a "default" setting. 
+//You may begin sending GL commands to the DS after this function executes
+void blu_impl::GFX_Init3DDevice(){
+videoSetMode(MODE_0_3D);
+
+// initialize the geometry engine
+glInit();
+
+// enable antialiasing
+glEnable(GL_ANTIALIAS);
+
+// setup the rear plane
+glClearColor(0,0,0,31); // BG must be opaque for AA to work
+glClearPolyID(63); // BG must have a unique polygon ID for AA to work
+glClearDepth(0x7FFF);
+
+// Set our viewport to be the same size as the screen
+glViewport(0,0,255,191);
+
+// this controls your camera 
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+gluPerspective(70, 256.0 / 192.0, 0.1, 100);
+
+//ds specific, several attributes can be set here       
+glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
+// Set the current matrix to be the model matrix
+glMatrixMode(GL_MODELVIEW);
+}
