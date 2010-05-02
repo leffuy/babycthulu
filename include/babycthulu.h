@@ -8,7 +8,10 @@
 typedef bool (*bluCallback)();
 
 struct bluSprite{
+int init;
 int frame;
+int framerate;
+int counter;
 int x;
 int y;
 int fps;
@@ -28,6 +31,8 @@ struct bluAnimation{
 unsigned short frames;
 const unsigned short** palList;
 const unsigned int** tileList;
+unsigned int* tlen;
+unsigned int* plen;
 };
 
 enum bluFunc{
@@ -50,8 +55,9 @@ virtual void GFX_Initiate() = 0;
 virtual void GFX_LDSprite(bluSprite* bsp) = 0;
 virtual void GFX_BltSpr(bluSprite* bsp) = 0;
 virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
-virtual int GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal) = 0;
+virtual int GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal, u32 tlength, u32 plength) = 0;
 virtual void GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
+virtual void GFX_ReleaseAnimationFrames(bluAnimation* ban) = 0;
 virtual void GFX_Init3DDevice() = 0;
 };
 
