@@ -8,6 +8,7 @@
 typedef bool (*bluCallback)();
 
 struct bluSprite{
+int frame;
 int x;
 int y;
 int fps;
@@ -25,8 +26,8 @@ SpriteColorFormat sfmt;
 
 struct bluAnimation{
 unsigned short frames;
-unsigned short** palList;
-unsigned int** tileList;
+const unsigned short** palList;
+const unsigned int** tileList;
 }
 
 enum bluFunc{
@@ -41,13 +42,16 @@ struct bluBG{
 class bcthulu{
 public:
 virtual void Release() = 0;
+
 virtual void System_Start() = 0;
 virtual void System_SetFunc(bluCallback func, bluFunc fblu) = 0;
+
 virtual void GFX_Initiate() = 0;
 virtual void GFX_LDSprite(bluSprite* bsp) = 0;
 virtual void GFX_BltSpr(bluSprite* bsp) = 0;
 virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
-
+virtual void GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal);
+virtual void GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
 
 };
 

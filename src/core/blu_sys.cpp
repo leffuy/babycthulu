@@ -65,3 +65,35 @@ oamSet(&oamMain,bsp->id,bsp->x,bsp->y,bsp->priority,0,SpriteSize_64x64,SpriteCol
 oamUpdate(&oamMain);
 }
 
+//ANIMATION
+//creates one frame and points the next frame to itself
+//The tail will always point to the head when you add frames
+void blu_impl::GFX_InitAnimationFrames(bluAnimation* ban, u16 frames){
+ban->palList = new (u16*)[frames];
+ban->tileList = new (u32*)[frames];
+ban->frames = frames;
+}
+
+
+int blu_impl::GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal){
+if(index >= ban->frames)
+return -1; //frame index out of range
+
+else{
+ban->palList[index] = pal;
+ban->tileList[index] = tile;
+return 0;
+}
+
+}
+
+void blu_impl::GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban){
+if(bsp->frame >= ban->frames)
+bsp->frame = 0;
+
+bsp->tiles = ban->tileList[bsp->frame];
+bsp->pal = ban->palList[bsp->frame];
+bsp->frame++;
+}
+
+
