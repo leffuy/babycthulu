@@ -39,7 +39,7 @@ case BLURENDFUNC: bluRenderFunc=func; break;
 void blu_impl::System_Start(){
 for(;;){
 if(bluFrameFunc()) break;
-if(bluRenderFunc) bluRenderFunc();
+//if(bluRenderFunc) bluRenderFunc();
 }
 }
 
@@ -170,3 +170,83 @@ glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
 // Set the current matrix to be the model matrix
 glMatrixMode(GL_MODELVIEW);
 }
+
+void blu_impl::Input_Init(){
+this->StashQueue();
+}
+
+bluVent blu_impl::Input_PumpQueue(){
+if(!headpV->next){
+bluVent bnull;
+bnull.msg = NO_MSG;
+return bnull;
+}
+bluVent current = *headpV;
+if(headpV->next){
+bluVent* freeme = headpV;
+headpV = headpV->next;
+free(freeme);
+}
+return current;
+}
+
+int blu_impl::Input_KeysPressed(){
+bluVent keyVent;
+scanKeys();
+unsigned int keys = 0;
+keys = keysDown();
+
+if(!keys){
+keyVent.msg = NO_MSG;
+AddToTailQueue(keyVent);
+return 0;
+}
+
+keyVent.msg = KEYPRESS;
+keyVent.keys = keys; 
+AddToTailQueue(keyVent);
+return 1;
+}
+
+int blu_impl::Input_KeysHeld(){
+bluVent keyVent;
+scanKeys();
+unsigned int keys = 0;
+keys = keysHeld();
+
+if(!keys){
+keyVent.msg = NO_MSG;
+AddToTailQueue(keyVent);
+return 0;
+}
+
+keyVent.msg = KEYPRESS;
+keyVent.keys = keys; 
+AddToTailQueue(keyVent);
+return 1;
+}
+
+void blu_impl::Input_PushEvent(bluVent bvent){
+this->AddToTailQueue(bvent);
+}
+
+//powers up the event event engine by creating a head pointer for the queue
+//in malloc space and set
+void blu_impl::StashQueue(){
+headpV = (bluVent*)malloc(sizeof(bluVent));
+headpV->msg = PWR_ON;
+headpV->next = 0;
+tailpV = headpV;
+}
+
+void blu_impl::AddToTailQueue(bluVent pBV){
+bluVent* p_tmpV = (bluVent*)malloc(sizeof(bluVent));
+p_tmpV->msg = pBV.msg;
+p_tmpV->keys = pBV.keys;
+p_tmpV->flags = pBV.flags;
+tailpV->next = p_tmpV;
+tailpV = tailpV->next;
+}
+
+
+

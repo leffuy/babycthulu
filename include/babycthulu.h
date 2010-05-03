@@ -7,6 +7,11 @@
 
 typedef bool (*bluCallback)();
 
+enum bluFunc{
+BLUFRAMFUNC = 0,
+BLURENDFUNC = 1
+};
+
 struct bluSprite{
 int init;
 int frame;
@@ -35,30 +40,45 @@ unsigned int* tlen;
 unsigned int* plen;
 };
 
-enum bluFunc{
-BLUFRAMFUNC = 0,
-BLURENDFUNC = 1
-};
-
 struct bluBG{
 
 };
 
+enum blumsg{
+NO_MSG = 0,
+PWR_ON = 1,
+KEYPRESS = 2,
+QUIT = 3
+};
+
+struct bluVent{
+blumsg msg;
+u32 keys;
+u16 flags;
+bluVent* next;
+};
+
 class bcthulu{
 public:
-virtual void Release() = 0;
+virtual void 	Release() = 0;
 
-virtual void System_Start() = 0;
-virtual void System_SetFunc(bluCallback func, bluFunc fblu) = 0;
+virtual void 	System_Start() = 0;
+virtual void 	System_SetFunc(bluCallback func, bluFunc fblu) = 0;
 
-virtual void GFX_Initiate() = 0;
-virtual void GFX_LDSprite(bluSprite* bsp) = 0;
-virtual void GFX_BltSpr(bluSprite* bsp) = 0;
-virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
-virtual int GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal, u32 tlength, u32 plength) = 0;
-virtual void GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
-virtual void GFX_ReleaseAnimationFrames(bluAnimation* ban) = 0;
-virtual void GFX_Init3DDevice() = 0;
+virtual void 	GFX_Initiate() = 0;
+virtual void 	GFX_LDSprite(bluSprite* bsp) = 0;
+virtual void 	GFX_BltSpr(bluSprite* bsp) = 0;
+virtual void 	GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
+virtual int 	GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal, u32 tlength, u32 plength) = 0;
+virtual void 	GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
+virtual void 	GFX_ReleaseAnimationFrames(bluAnimation* ban) = 0;
+virtual void 	GFX_Init3DDevice() = 0;
+
+virtual void	Input_Init() = 0;
+virtual bluVent Input_PumpQueue() = 0;
+virtual int 	Input_KeysPressed() = 0;
+virtual int 	Input_KeysHeld() = 0;
+virtual void 	Input_PushEvent(bluVent bvent) = 0;
 };
 
 extern bcthulu* bluCreate();
