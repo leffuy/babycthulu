@@ -1,13 +1,21 @@
+
+
 /*---------------------------------------------------------------------------------
 
 	Simple console print demo
 	-- dovoto
-
+Thank you dovoto. This has become my personal sandbox for toying with babycthulu
+It's become something else.
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
 #include <stdio.h>
 #include "babycthulu/include/babycthulu.h"
 #include "tsprite.h"
+#include "sspin1.h"
+#include "sspin2.h"
+#include "sspin3.h"
+#include "sspin4.h"
+
 //---------------------------------------------------------------------------------
 //unsigned short* g_gfx;
 bcthulu* tblu; //long pointer to cthulu
@@ -15,29 +23,32 @@ bluSprite bsp;
 bluAnimation tban;
 bluSprite bsp2;
 
-int DrawGLScene();
+bool FrameProc();
+bool DrawGLScene();
 static unsigned int rtri;
 static unsigned int rquad;
 
 int main(void) {
 //---------------------------------------------------------------------------------
 	
-//	consoleDemoInit();  //setup the sub screen for printing
-	bcthulu* tblu = bluCreate();
+        tblu = bluCreate();
 	//create an interface to sprite data
+	bsp.init = 0;
+	bsp.framerate = 17;
+	bsp.counter = 0;
 	bsp.frame = 0;
-	bsp.tiles = tspriteTiles;
-	bsp.tlen = tspriteTilesLen;
-	bsp.pal = tspritePal;
-	bsp.plen = tspritePalLen;
-	bsp.sm = SpriteMapping_Bmp_1D_128;
-	bsp.sz = SpriteSize_64x64;
+	bsp.tiles = sspin1Tiles;
+	bsp.tlen = 32*32;
+	bsp.pal = sspin1Pal;
+	bsp.plen = sspin1PalLen;
+	bsp.sm = SpriteMapping_1D_128;
+	bsp.sz = SpriteSize_32x32;
 	bsp.sfmt = SpriteColorFormat_256Color;
-	bsp.x = 64;
+	bsp.x = 32;
 	bsp.y = 32;
 	bsp.id = 0;
 	bsp.priority = 0;
-	
+	/*
 	bsp2.tiles = tspriteTiles;
 	bsp2.tlen = tspriteTilesLen;
 	bsp2.pal = tspritePal;
@@ -48,43 +59,40 @@ int main(void) {
 	bsp2.x = 128;
 	bsp2.y = 80;
 	bsp2.id = 1;
-	bsp2.priority = 0;
-
-	BG_PALETTE[1] = RGB15(31,0,0);
-	//end block
+	bsp2.priority = 1;
+	*/
+	tblu->Input_Init();
 	tblu->GFX_Initiate();	
-	tblu->GFX_LDSprite(&bsp2);
-	tblu->GFX_InitAnimationFrames(&tban,2);
-	tblu->GFX_AddAnimationFrame(&tban, 0, tspriteTiles, tspritePal);
-	tblu->GFX_AddAnimationFrame(&tban, 1, tspriteTiles, tspritePal);
-//	iprintf("\tJust built interface to cthulu\n");
-//	iprintf("\tConjuring and now releasing\n");
-	while(1){
-	bsp.x += 2;
-	if(bsp.x > 100)
-	break;
-	swiWaitForVBlank();
-	tblu->GFX_PlayAnimation(&bsp, &tban);
 	tblu->GFX_LDSprite(&bsp);
-	tblu->GFX_BltSpr(&bsp);
-	tblu->GFX_BltSpr(&bsp2);
-//intert timer here
+	tblu->GFX_InitAnimationFrames(&tban, 4);
+	tblu->GFX_AddAnimationFrame(&tban, 0, sspin1Tiles, sspin1Pal, sspin1TilesLen, sspin1PalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 1, sspin2Tiles, sspin2Pal, sspin2TilesLen, sspin2PalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 2, sspin3Tiles, sspin3Pal, sspin3TilesLen, sspin3PalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 3, sspin4Tiles, sspin4Pal, sspin4TilesLen, sspin4PalLen);
+	tblu->System_SetFunc(FrameProc, BLUFRAMFUNC);
+
+	consoleDemoInit();  //setup the sub screen for printing
+//	tblu->GFX_BltSpr(&bsp);
+	tblu->System_Start();
+//        while(true){
+//	FrameProc();
+//	frameFunction();
+//	}
+///	tblu->System_Start();
+	
 
 
-	}
+//	tblu->GFX_Init3DDevice();
+//	while(1){
+//	DrawGLScene();
+//	glFlush(0);	
 
-	tblu->GFX_Init3DDevice();
-	while(1){
-	DrawGLScene();
-	glFlush(0);	
-
-	}
+//	}
 
 /*	tblu->Release();
 	while(1) {
 
 		touchRead(&touch);
-		iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
 		iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
 
 		swiWaitForVBlank();
@@ -93,20 +101,32 @@ int main(void) {
 */	return 0;
 }
 
-bool frameFunction(){
-//        touchPosition touch;
-	
-//	touchRead(&touch);
-//	iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
-//	iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
-	swiWaitForVBlank();
 
-	return false;
+bool FrameProc(){
+bluVent bluMe = tblu->Input_PumpQueue();
+
+if(bluMe.msg == KEYPRESS){
+for(int i = 0; i < 150; i++){
+tblu->GFX_PlayAnimation(&bsp, &tban);
+tblu->GFX_LDSprite(&bsp);
+tblu->GFX_BltSpr(&bsp);
+swiWaitForVBlank();
+}
+}
+swiWaitForVBlank();
+tblu->GFX_BltSpr(&bsp);
+
+iprintf("\x1b[10;0HTouch x =\n");
+//this is just a test hope it works, if program, idles wait for input
+bluMe = tblu->Input_PumpQueue();
+tblu->Input_KeysPressed();
+return false;
 }
 
-int DrawGLScene()                                                                                       // Here's Where We Do All The Drawing
+bool DrawGLScene()                                                                                       // Here's Where We Do All The Drawing
 {
-        /*ds does this automagicaly*///glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      // Clear Screen And Depth Buffer
+
+       /*ds does this automagicaly*///glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      // Clear Screen And Depth Buffer
         glLoadIdentity();                                                                       // Reset The Current Modelview Matrix
         glTranslatef(-1.5f,0.0f,-6.0f);                                         // Move Left 1.5 Units And Into The Screen 6.0
         glRotatef(rtri,0.0f,1.0f,0.0f);                                         // Rotate The Triangle On The Y axis ( NEW )
@@ -131,6 +151,7 @@ int DrawGLScene()                                                               
         glEnd();                                                                                        // Done Drawing The Quad
         rtri+=0.9f;                                                                                     // Increase The Rotation Variable For The Triangle ( NEW )
         rquad-=0.75f;                                                                           // Decrease The Rotation Variable For The Quad ( NEW )
-        return 0;                                                                            // Keep Going
+        return false; // Keep Going
+	
 }
 
