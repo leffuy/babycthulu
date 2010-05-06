@@ -47,7 +47,7 @@ if(bluFrameFunc()) break;
 //
 void blu_impl::GFX_Initiate(){
 videoSetMode(MODE_0_2D);
-vramSetMainBanks(VRAM_A_MAIN_SPRITE,VRAM_B_LCD,VRAM_C_LCD,VRAM_D_LCD);
+vramSetMainBanks(VRAM_A_MAIN_SPRITE,VRAM_B_MAIN_BG,VRAM_C_LCD,VRAM_D_LCD);
 }
 
 
@@ -69,6 +69,7 @@ dmaCopy(bsp->pal, SPRITE_PALETTE, bsp->plen);
 //update this function first it's the ugliest and most unwieldly
 //maybe add bsprite param?
 void blu_impl::GFX_BltSpr(bluSprite* bsp){
+if(bsp->init != 0)
 oamSet(&oamMain,bsp->id,bsp->x,bsp->y,bsp->priority,0,bsp->sz,bsp->sfmt,bsp->gfx,0,false,false,false,false,false);
 oamUpdate(&oamMain);
 }

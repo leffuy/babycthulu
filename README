@@ -18,3 +18,103 @@ in the same way Game Maker was useful in making neat nethack like RPG's.
 
 Anywho. Enjoi what I've got so far. Try out what you can. Break it send in bugs.
 
+
+*************************************************************
+*
+* CTHULU Basics
+*
+*
+----------------------------
+
+
+1.1 bcthulu Nodes.
+Baby Cthulu is first and foremost an API. Thus you must have an access method.
+The functions of the babyCthulu interface can be seen in the source.
+
+To create a handle to babyCthulu use the call "bluCreate()" to return a
+reference to the babycthulu interface. This is done as so:
+
+	bcthulu* blu = bluCreate();
+
+After this call blu will have a reference to babyCthulu. And will be able to
+make calls to the interface.
+
+blu->GFX_Initiate() or Input will begin to initialize the graphics engines and 
+will
+be ready to handle input and 2D. 
+
+1.2 Graphics
+As of currently babyCthulu only handles sprite memory. On could theoretically 
+add lower level code to access bg's until this functionality is added.
+
+Graphics memory can be initiated. It has not been implemented however.
+
+1.2.1 Sprites
+Lets first  take a look at the sprite memory. Using previous knowledge from the
+DS architecture we know that OMA memory has 128 active spaces to hold sprites
+of any shape size or format. (Unlike it's predecessor the gba which did not
+have enough memory to full implement OAM). 
+
+Lets look at some specs before diving into cthulu
+	*0680:0000 is the VRAM base of a total of 656KB. Libnds breaks this up 
+	 into 9 banks. 
+		Bank A - B: 128KB
+		Bank E: 64KB
+		Bank F & G: 16KB
+		Bank H: 32KB
+		Bank I: 16KB
+	This spans all of VRAM @680:0000. One needs to map virtual VRAM pointer 
+        addresses to the real VRAM for the 2D engine to operate. This is done
+	with setBank(parameters);
+
+	That is not in the scope of this manual and if you have not learned it
+	you should not be using cthulu.
+
+Babycthulu will automatically set the memory banks dependning on what you're
+going to craft in terms of it's the engines. The default initiate will
+set the Bank A to the start of sprite memory, and Bank B to the BG.
+
+So to get ready to make sprites go ahead and call blu->GFX_Inititate(); 
+Onto the sprite structures. Baby Cthulu handles all sprite data in memory
+using structures that represents a fully animated sprite. (This is an advanced
+feature, the animation). Go take a look in the babyCthulu header file about
+what data you can set into the sprite:
+		
+		struct bluSprite{
+		int init;
+		int frame;
+		int framerate;
+		int counter;
+		int x;
+		int y;
+		int fps;
+		int id;
+		int priority;
+		unsigned short* gfx;
+		const unsigned int* tiles;
+		const unsigned short* pal;
+		unsigned int tlen;
+		unsigned int plen;
+		SpriteMapping sm;
+		SpriteSize sz;
+		SpriteColorFormat sfmt;
+		};
+
+All of these should be self explanatory (save init, set init to 0 before 
+initializing a sprite and it will be set to 1. Do not mess with it after. Set 
+frame the framerate and counter to 0 as well). 
+
+Framerate is not a real FPS. The higher this number the slower the animation 
+will play the lower the faster it will play. 
+
+Everything else should be explanatory. 
+
+After you construct a struct, pass a reference to it to LDSprite(); this will 
+cause the sprite to go into memory. From here you my BltSpr() it.
+
+---
+
+I do not have time to finish this. Do not be a n00b Patrick.
+
+-Stevie
+

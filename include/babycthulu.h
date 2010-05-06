@@ -19,7 +19,6 @@ int framerate;
 int counter;
 int x;
 int y;
-int fps;
 int id;
 int priority;
 unsigned short* gfx;
