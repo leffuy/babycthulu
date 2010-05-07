@@ -12,6 +12,19 @@ BLUFRAMFUNC = 0,
 BLURENDFUNC = 1
 };
 
+struct bluGround{
+int init;
+int xShift;
+int yShift;
+int id;
+int priority;
+BackgroundControl grndctl;
+BgSize grndsz;
+BgType grndtype;
+const unsigned char* tiles;
+const unsigned short* map;
+};
+
 struct bluSprite{
 int init;
 int frame;
@@ -72,6 +85,7 @@ virtual int 	GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile
 virtual void 	GFX_InitAnimationFrames(bluAnimation* ban, u16 frames) = 0;
 virtual void 	GFX_ReleaseAnimationFrames(bluAnimation* ban) = 0;
 virtual void 	GFX_Init3DDevice() = 0;
+
 
 virtual void	Input_Init() = 0;
 virtual bluVent Input_PumpQueue() = 0;

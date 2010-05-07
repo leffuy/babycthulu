@@ -119,9 +119,11 @@ bsp->tlen = ban->tlen[bsp->frame];
 bsp->plen = ban->plen[bsp->frame];
 
 bsp->frame += !(bsp->counter%bsp->framerate);
+GFX_LDSprite(bsp);
 }
 
 
+//void blu_impl::GFX_BGSomething
 
 //3D graphics implementation utilizes Libnds' GL impl of GFX ports
 //See bottledlight.com this is tricky to use
