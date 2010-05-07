@@ -67,8 +67,8 @@ int main(void) {
 	tblu->GFX_AddAnimationFrame(&tban, 0, sspinTiles, sspinPal, sspinTilesLen, sspinPalLen);
 	tblu->GFX_AddAnimationFrame(&tban, 1, sspinTiles+32*16, sspinPal, sspinTilesLen, sspinPalLen);
 //	tblu->GFX_AddAnimationFrame(&tban, 2, sspinTiles+32, sspinPal, sspinTilesLen, sspinPalLen);
-	tblu->GFX_AddAnimationFrame(&tban2, 0, sspinTiles+32*32, sspinPal, sspinTilesLen, sspinPalLen);
-	tblu->GFX_AddAnimationFrame(&tban2, 1, sspinTiles+32*(32+16), sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 0, sspinTiles+32*(32+16), sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 1, sspinTiles+32*(32+32), sspinPal, sspinTilesLen, sspinPalLen);
 
 	tblu->System_SetFunc(FrameProc, BLUFRAMFUNC);
 
@@ -80,12 +80,12 @@ int main(void) {
 	
 
 
-//	tblu->GFX_Init3DDevice();
-//	while(1){
-//	DrawGLScene();
-//	glFlush(0);	
+	tblu->GFX_Init3DDevice();
+	while(1){
+	DrawGLScene();
+	glFlush(0);	
 
-//	}
+	}
 
 /*	tblu->Release();
 	while(1) {
@@ -107,33 +107,31 @@ if(bluMe.msg == KEYPRESS){
 if(bluMe.keys == KEY_A){
 for(int i = 0; i < 150; i++){
 tblu->GFX_PlayAnimation(&bsp, &tban);
-
 tblu->GFX_BltSpr(&bsp);
 swiWaitForVBlank();
-}
-}
-swiWaitForVBlank();
-tblu->GFX_BltSpr(&bsp);
+consoleClear();
 iprintf("\x1b[10;0H Sprite= 1\n");
 }
-if(bluMe.msg == KEYPRESS){
+}
 if(bluMe.keys == KEY_B){
 for(int i = 0; i < 150; i++){
 tblu->GFX_PlayAnimation(&bsp, &tban2);
-
 tblu->GFX_BltSpr(&bsp);
 swiWaitForVBlank();
+consoleClear();
+iprintf("\x1b[10;0H Sprite= 2\n");
 }
 }
-swiWaitForVBlank();
-tblu->GFX_BltSpr(&bsp);
-iprintf("\x1b[10;0H Sprite= 1\n");
-
+if(bluMe.keys == KEY_DOWN){
+bluVent b = {QUIT};
+tblu->Input_PushEvent(b);
+}
+}
+if(bluMe.msg == QUIT){
+return true;
 }
 //this is just a test hope it works, if program, idles wait for input
-bluMe = tblu->Input_PumpQueue();
 tblu->Input_KeysPressed();
-
 return false;
 }
 
