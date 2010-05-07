@@ -11,16 +11,14 @@ It's become something else.
 #include <stdio.h>
 #include "babycthulu/include/babycthulu.h"
 #include "tsprite.h"
-#include "sspin1.h"
-#include "sspin2.h"
-#include "sspin3.h"
-#include "sspin4.h"
+#include "sspin.h"
 
 //---------------------------------------------------------------------------------
 //unsigned short* g_gfx;
 bcthulu* tblu; //long pointer to cthulu
 bluSprite bsp;
 bluAnimation tban;
+bluAnimation tban2;
 bluSprite bsp2;
 
 bool FrameProc();
@@ -37,10 +35,10 @@ int main(void) {
 	bsp.framerate = 17;
 	bsp.counter = 0;
 	bsp.frame = 0;
-	bsp.tiles = sspin1Tiles;
+	bsp.tiles = sspinTiles;
 	bsp.tlen = 32*32;
-	bsp.pal = sspin1Pal;
-	bsp.plen = sspin1PalLen;
+	bsp.pal = sspinPal;
+	bsp.plen = sspinPalLen;
 	bsp.sm = SpriteMapping_1D_128;
 	bsp.sz = SpriteSize_32x32;
 	bsp.sfmt = SpriteColorFormat_256Color;
@@ -64,11 +62,14 @@ int main(void) {
 	tblu->Input_Init();
 	tblu->GFX_Initiate();	
 	tblu->GFX_LDSprite(&bsp);
-	tblu->GFX_InitAnimationFrames(&tban, 4);
-	tblu->GFX_AddAnimationFrame(&tban, 0, sspin1Tiles, sspin1Pal, sspin1TilesLen, sspin1PalLen);
-	tblu->GFX_AddAnimationFrame(&tban, 1, sspin2Tiles, sspin2Pal, sspin2TilesLen, sspin2PalLen);
-	tblu->GFX_AddAnimationFrame(&tban, 2, sspin3Tiles, sspin3Pal, sspin3TilesLen, sspin3PalLen);
-	tblu->GFX_AddAnimationFrame(&tban, 3, sspin4Tiles, sspin4Pal, sspin4TilesLen, sspin4PalLen);
+	tblu->GFX_InitAnimationFrames(&tban, 2);
+	tblu->GFX_InitAnimationFrames(&tban2, 2);
+	tblu->GFX_AddAnimationFrame(&tban, 0, sspinTiles, sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 1, sspinTiles+32*16, sspinPal, sspinTilesLen, sspinPalLen);
+//	tblu->GFX_AddAnimationFrame(&tban, 2, sspinTiles+32, sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 0, sspinTiles+32*32, sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 1, sspinTiles+32*(32+16), sspinPal, sspinTilesLen, sspinPalLen);
+
 	tblu->System_SetFunc(FrameProc, BLUFRAMFUNC);
 
 	consoleDemoInit();  //setup the sub screen for printing
@@ -76,9 +77,6 @@ int main(void) {
 	tblu->System_Start();
 //        while(true){
 //	FrameProc();
-//	frameFunction();
-//	}
-///	tblu->System_Start();
 	
 
 
@@ -106,20 +104,36 @@ bool FrameProc(){
 bluVent bluMe = tblu->Input_PumpQueue();
 
 if(bluMe.msg == KEYPRESS){
+if(bluMe.keys == KEY_A){
 for(int i = 0; i < 150; i++){
 tblu->GFX_PlayAnimation(&bsp, &tban);
-tblu->GFX_LDSprite(&bsp);
-tblu->GFX_BltSpr(&bsp);
-swiWaitForVBlank();
-}
-}
-swiWaitForVBlank();
-tblu->GFX_BltSpr(&bsp);
 
-iprintf("\x1b[10;0HTouch x =\n");
+tblu->GFX_BltSpr(&bsp);
+swiWaitForVBlank();
+}
+}
+swiWaitForVBlank();
+tblu->GFX_BltSpr(&bsp);
+iprintf("\x1b[10;0H Sprite= 1\n");
+}
+if(bluMe.msg == KEYPRESS){
+if(bluMe.keys == KEY_B){
+for(int i = 0; i < 150; i++){
+tblu->GFX_PlayAnimation(&bsp, &tban2);
+
+tblu->GFX_BltSpr(&bsp);
+swiWaitForVBlank();
+}
+}
+swiWaitForVBlank();
+tblu->GFX_BltSpr(&bsp);
+iprintf("\x1b[10;0H Sprite= 1\n");
+
+}
 //this is just a test hope it works, if program, idles wait for input
 bluMe = tblu->Input_PumpQueue();
 tblu->Input_KeysPressed();
+
 return false;
 }
 
