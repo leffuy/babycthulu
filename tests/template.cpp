@@ -62,13 +62,14 @@ int main(void) {
 	tblu->Input_Init();
 	tblu->GFX_Initiate();	
 	tblu->GFX_LDSprite(&bsp);
-	tblu->GFX_InitAnimationFrames(&tban, 2);
-	tblu->GFX_InitAnimationFrames(&tban2, 2);
+	tblu->GFX_InitAnimationFrames(&tban, 3);
+	tblu->GFX_InitAnimationFrames(&tban2, 3);
 	tblu->GFX_AddAnimationFrame(&tban, 0, sspinTiles, sspinPal, sspinTilesLen, sspinPalLen);
-	tblu->GFX_AddAnimationFrame(&tban, 1, sspinTiles+32*16, sspinPal, sspinTilesLen, sspinPalLen);
-//	tblu->GFX_AddAnimationFrame(&tban, 2, sspinTiles+32, sspinPal, sspinTilesLen, sspinPalLen);
-	tblu->GFX_AddAnimationFrame(&tban2, 0, sspinTiles+32*(32+16), sspinPal, sspinTilesLen, sspinPalLen);
-	tblu->GFX_AddAnimationFrame(&tban2, 1, sspinTiles+32*(32+32), sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 1, sspinTiles+256, sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 2, sspinTiles+512, sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 0, sspinTiles+32*(32+0), sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 1, sspinTiles+32*(32+16), sspinPal, sspinTilesLen, sspinPalLen);
+	tblu->GFX_AddAnimationFrame(&tban2, 2, sspinTiles+32*(32+32), sspinPal, sspinTilesLen, sspinPalLen);
 
 	tblu->System_SetFunc(FrameProc, BLUFRAMFUNC);
 
