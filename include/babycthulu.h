@@ -23,6 +23,7 @@ BgSize grndsz;
 BgType grndtype;
 const unsigned char* tiles;
 const unsigned short* map;
+unsigned int id;
 };
 
 struct bluSprite{
@@ -52,9 +53,8 @@ unsigned int* tlen;
 unsigned int* plen;
 };
 
-struct bluBG{
 
-};
+
 
 enum blumsg{
 NO_MSG = 0,
