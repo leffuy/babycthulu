@@ -114,7 +114,17 @@ cause the sprite to go into memory. From here you my BltSpr() it.
 
 ---
 
-I do not have time to finish this. Do not be a n00b Patrick.
+If this manual is out of your scope here are some things to get started before
+developing with or for babyCthulu:
+*GNU C/C++ - if you know Java, Basic, or any language, this will take at most a
+day to get up to speed
+
+*Pointers - this is a part of learning C/C++, but they are a fundamental concept
+in computing that many people misinterperate and henceforth misuse.
+
+If you understand those two things you should be fine, if not people will hate
+you as you work on this project. 
 
 -Stevie
 
+Project by: Stevie Frederick and Patrick Jennings
