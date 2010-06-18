@@ -36,12 +36,32 @@ case BLURENDFUNC: bluRenderFunc=func; break;
 }
 }
 
+
+//Start construction
+//we'll start editing here I'll chuck out these comments when construction is
+//completed
+
+//Lets make the System update the keys every round for starters
+//Then add size functionality to the queue for maintenance and optimization 
+//issues
+//Then I guess create an event handler for each type of even to cut down on
+//dispatching through a switchbaord
+
 void blu_impl::System_Start(){
 for(;;){
+
+//event based handling causes these to hit and get added to history to be dealt
+//with later. Causes latency but humans are slow.
+this->Input_KeysPressed(); 
+this->Input_KeysHeld();
+
 if(bluFrameFunc()) break;
 //if(bluRenderFunc) bluRenderFunc();
 }
 }
+
+//End construction. Make sure to annotate all notes man!
+
 
 //this function initiates video ram for immediate use with sprites
 //
