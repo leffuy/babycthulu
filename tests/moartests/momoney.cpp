@@ -21,7 +21,7 @@ bluAnimation tban;
 bluAnimation tban2;
 bluSprite bsp2;
 
-bool FrameProc();
+bool FrameProc(bluVent bluMe);
 bool DrawGLScene();
 static unsigned int rtri;
 static unsigned int rquad;
@@ -65,7 +65,7 @@ int main(void) {
 	tblu->GFX_InitAnimationFrames(&tban, 2);
 //	tblu->GFX_InitAnimationFrames(&tban2, 3);
 	tblu->GFX_AddAnimationFrame(&tban, 0, sgunTiles, sgunPal, sgunTilesLen, sgunPalLen);
-	tblu->GFX_AddAnimationFrame(&tban, 1, sgunTiles+256, sgunPal, sgunTilesLen, sgunPalLen);
+	tblu->GFX_AddAnimationFrame(&tban, 1, sgunTiles+512, sgunPal, sgunTilesLen, sgunPalLen);
 //	tblu->GFX_AddAnimationFrame(&tban, 2, sspinTiles+512, sspinPal, sspinTilesLen, sspinPalLen);
 //	tblu->GFX_AddAnimationFrame(&tban2, 0, sspinTiles+512+256, sspinPal, sspinTilesLen, sspinPalLen);
 //	tblu->GFX_AddAnimationFrame(&tban2, 1, sspinTiles+1024, sspinPal, sspinTilesLen, sspinPalLen);
@@ -101,14 +101,13 @@ int main(void) {
 }
 
 
-bool FrameProc(){
+bool FrameProc(bluVent bluMe){
 tblu->Input_KeysHeld();
-bluVent bluMe = tblu->Input_PumpQueue();
 if(bluMe.msg == PWR_ON){
 printf("Input Powered On \n");
 }
 if(bluMe.msg == NO_MSG){
-iprintf("\x1b[10;0H Idling! \n");
+iprintf("\x1b[20;16H Idling! \n");
 }
 if(bluMe.msg == NULL_MSG){
 printf("EOQ! \n");

@@ -4,9 +4,6 @@
 
 #include <nds.h>
 
-
-typedef bool (*bluCallback)();
-
 enum bluFunc{
 BLUFRAMFUNC = 0,
 BLURENDFUNC = 1
@@ -52,9 +49,6 @@ unsigned int* tlen;
 unsigned int* plen;
 };
 
-
-
-
 enum blumsg{
 NULL_MSG = 0,
 NO_MSG = 1,
@@ -71,6 +65,8 @@ u16 flags;
 bluVent* next;
 };
 
+typedef bool (*bluCallback)(bluVent aVent);
+
 class bcthulu{
 public:
 virtual void 	Release() = 0;
@@ -80,6 +76,7 @@ virtual void 	System_SetFunc(bluCallback func, bluFunc fblu) = 0;
 
 virtual void 	GFX_Initiate() = 0;
 virtual void 	GFX_LDSprite(bluSprite* bsp) = 0;
+virtual void    GFX_ULDSprite(bluSprite* bsp) = 0;
 virtual void 	GFX_BltSpr(bluSprite* bsp) = 0;
 virtual void 	GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban) = 0;
 virtual int 	GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal, u32 tlength, u32 plength) = 0;

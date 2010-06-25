@@ -14,6 +14,7 @@ virtual void System_SetFunc(bluCallback func, bluFunc fblu);
 
 virtual void GFX_Initiate();
 virtual void GFX_LDSprite(bluSprite* bsp);
+virtual void GFX_ULDSprite(bluSprite* bsp);
 virtual void GFX_BltSpr(bluSprite* bsp);
 virtual void GFX_PlayAnimation(bluSprite* bsp, bluAnimation* ban);
 virtual int GFX_AddAnimationFrame(bluAnimation* ban, u16 index, const u32* tile, const u16* pal, u32 tlength, u32 plength);
@@ -38,8 +39,8 @@ void AddToTailQueue(bluVent pBV);
 
 //members
 //function pointers
-bool (*bluFrameFunc)();
-bool (*bluRenderFunc)();
+bool (*bluFrameFunc)(bluVent aVent);
+bool (*bluRenderFunc)(bluVent aVent);
 
 //types
 u16	 qCount;
