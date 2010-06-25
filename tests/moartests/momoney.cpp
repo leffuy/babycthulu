@@ -107,7 +107,7 @@ if(bluMe.msg == PWR_ON){
 printf("Input Powered On \n");
 }
 if(bluMe.msg == NO_MSG){
-iprintf("\x1b[20;16H Idling! \n");
+iprintf("\x1b[20;16H Idling!");
 }
 if(bluMe.msg == NULL_MSG){
 printf("EOQ! \n");
