@@ -112,7 +112,7 @@ iprintf("\x1b[20;16H Idling! \n");
 if(bluMe.msg == NULL_MSG){
 printf("EOQ! \n");
 }
-if(bluMe.msg == KEYPRESSED){
+if(bluMe.msg == KEYPRESS){
 printf("KEY PRESS!! \n");
 if(bluMe.keys == KEY_A){
 for(int i = 0; i < 150; i++){
