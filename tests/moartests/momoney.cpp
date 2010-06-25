@@ -102,33 +102,24 @@ int main(void) {
 
 
 bool FrameProc(){
-if(tblu->Input_KeysHeld()){
-consoleClear();
-iprintf("\x1b[22;4H Key DEFINITELY Hit! \n");
-}
+tblu->Input_KeysHeld();
 bluVent bluMe = tblu->Input_PumpQueue();
 if(bluMe.msg == PWR_ON){
-consoleClear();
-iprintf("\x1b[10;0H Init Powered On \n");
+printf("Input Powered On \n");
 }
 if(bluMe.msg == NO_MSG){
-consoleClear();
 iprintf("\x1b[10;0H Idling! \n");
 }
 if(bluMe.msg == NULL_MSG){
-consoleClear();
-iprintf("\x1B[10;0H EOQ! \n");
+printf("EOQ! \n");
 }
 if(bluMe.msg == KEYHELD){
-consoleClear();
-iprintf("\x1b[10;0H KEY PRESS!! \n");
+printf("KEY PRESS!! \n");
 if(bluMe.keys == KEY_A){
 for(int i = 0; i < 150; i++){
 tblu->GFX_PlayAnimation(&bsp, &tban);
 tblu->GFX_BltSpr(&bsp);
 swiWaitForVBlank();
-consoleClear();
-iprintf("\x1b[10;0H Sprite= 1\n");
 }
 }
 if(bluMe.keys == KEY_B){
@@ -136,8 +127,6 @@ for(int i = 0; i < 150; i++){
 //tblu->GFX_PlayAnimation(&bsp, &tban2);
 tblu->GFX_BltSpr(&bsp);
 swiWaitForVBlank();
-consoleClear();
-iprintf("\x1b[10;0H Sprite= 2\n");
 }
 }
 if(bluMe.keys == KEY_DOWN){
