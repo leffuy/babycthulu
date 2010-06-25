@@ -102,7 +102,7 @@ int main(void) {
 
 
 bool FrameProc(bluVent bluMe){
-tblu->Input_KeysHeld();
+tblu->Input_KeysPressed();
 if(bluMe.msg == PWR_ON){
 printf("Input Powered On \n");
 }
@@ -112,7 +112,7 @@ iprintf("\x1b[20;16H Idling! \n");
 if(bluMe.msg == NULL_MSG){
 printf("EOQ! \n");
 }
-if(bluMe.msg == KEYHELD){
+if(bluMe.msg == KEYPRESSED){
 printf("KEY PRESS!! \n");
 if(bluMe.keys == KEY_A){
 for(int i = 0; i < 150; i++){
