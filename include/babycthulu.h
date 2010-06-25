@@ -56,10 +56,12 @@ unsigned int* plen;
 
 
 enum blumsg{
-NO_MSG = 0,
-PWR_ON = 1,
-KEYPRESS = 2,
-QUIT = 3
+NULL_MSG = 0,
+NO_MSG = 1,
+PWR_ON = 2,
+KEYPRESS = 3,
+KEYHELD = 4,
+QUIT = 5
 };
 
 struct bluVent{

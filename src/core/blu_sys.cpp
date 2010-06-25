@@ -52,9 +52,6 @@ for(;;){
 
 //event based handling causes these to hit and get added to history to be dealt
 //with later. Causes latency but humans are slow.
-this->Input_KeysPressed(); 
-this->Input_KeysHeld();
-
 if(bluFrameFunc()) break;
 //if(bluRenderFunc) bluRenderFunc();
 }
@@ -199,9 +196,9 @@ this->StashQueue();
 }
 
 bluVent blu_impl::Input_PumpQueue(){
-if(!headpV->next){
+if(!headpV){
 bluVent bnull;
-bnull.msg = NO_MSG;
+bnull.msg = NULL_MSG;
 return bnull;
 }
 bluVent current = *headpV;
@@ -234,8 +231,7 @@ return 1;
 int blu_impl::Input_KeysHeld(){
 bluVent keyVent;
 scanKeys();
-unsigned int keys = 0;
-keys = keysHeld();
+unsigned int keys = keysHeld();
 
 if(!keys){
 keyVent.msg = NO_MSG;
@@ -243,7 +239,7 @@ AddToTailQueue(keyVent);
 return 0;
 }
 
-keyVent.msg = KEYPRESS;
+keyVent.msg = KEYHELD;
 keyVent.keys = keys; 
 AddToTailQueue(keyVent);
 return 1;
