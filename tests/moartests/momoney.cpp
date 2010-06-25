@@ -78,7 +78,7 @@ int main(void) {
 	tblu->System_Start();
 //        while(true){
 //	FrameProc();
-	
+//{	
 
 
 	tblu->GFX_Init3DDevice();
@@ -102,9 +102,26 @@ int main(void) {
 
 
 bool FrameProc(){
+if(tblu->Input_KeysHeld()){
+consoleClear();
+iprintf("\x1b[22;4H Key DEFINITELY Hit! \n");
+}
 bluVent bluMe = tblu->Input_PumpQueue();
-
-if(bluMe.msg == KEYPRESS){
+if(bluMe.msg == PWR_ON){
+consoleClear();
+iprintf("\x1b[10;0H Init Powered On \n");
+}
+if(bluMe.msg == NO_MSG){
+consoleClear();
+iprintf("\x1b[10;0H Idling! \n");
+}
+if(bluMe.msg == NULL_MSG){
+consoleClear();
+iprintf("\x1B[10;0H EOQ! \n");
+}
+if(bluMe.msg == KEYHELD){
+consoleClear();
+iprintf("\x1b[10;0H KEY PRESS!! \n");
 if(bluMe.keys == KEY_A){
 for(int i = 0; i < 150; i++){
 tblu->GFX_PlayAnimation(&bsp, &tban);
@@ -132,7 +149,6 @@ if(bluMe.msg == QUIT){
 return true;
 }
 //this is just a test hope it works, if program, idles wait for input
-tblu->Input_KeysPressed();
 return false;
 }
 
