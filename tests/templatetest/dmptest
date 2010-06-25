@@ -1,0 +1,6 @@
+#!/bin/bash
+echo Copying files to arm9.
+cp Makefile ../../../../
+cp template.cpp ../../../
+cp ../gfx4tests/* ../../../../gfx/
+
