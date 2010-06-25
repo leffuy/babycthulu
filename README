@@ -44,7 +44,7 @@ will
 be ready to handle input and 2D. 
 
 1.2 Graphics
-As of currently babyCthulu only handles sprite memory. On could theoretically 
+As of currently babyCthulu only handles sprite memory. One could theoretically 
 add lower level code to access bg's until this functionality is added.
 
 Graphics memory can be initiated. It has not been implemented however.
@@ -110,19 +110,55 @@ will play the lower the faster it will play.
 Everything else should be explanatory. 
 
 After you construct a struct, pass a reference to it to LDSprite(); this will 
-cause the sprite to go into memory. From here you my BltSpr() it.
+cause the sprite to go into memory. From here you may BltSpr() it.
+
+So how to use this? First use the grit extensions in devkitpro to configure 
+your sprites for your program. See the sample gritfiles, the best learning is 
+through code. 
+
+Once you do this your tiles should be named after your image. I like to metatile
+so one sheet will have all the tiles like SnakeTiles or SnakePal and the len's
+respectively. This is the easiest way to manage 2D resources through the gfx 
+tools used by the Makefile. 
+
+So as said include the .h files to get the tiles and palette info. Afterwhich 
+pass these values into a babyCthulu sprite structure as described above.
+
+After you have set all that up and then set init=0 you are read to begin with 
+your sprite.
+
+Pass a call to  GFX_LDSprite() your sprite object and memory will be assigned to
+it and the system will declare it initialized. You can now build animations to 
+accesorize the sprite object with. And animation is created in much the same 
+fashion using a structure object. However it has two slots for large memory
+(assigned to the 4MB heap for optimization reasons), which we assign to tiles.
+
+So step one is describing the amount of frames the animation will be (usually
+indicated by the size of the sprite sheet). Then the sizes of each frame which
+is almost always the size of the base sprite. You then assign it frames the same
+way you assign a sprite a tileset. From here you make a call to play animation
+with a reference to the base sprite. This call will determine if enough time has
+passed to change frames if so it pulls the current tiles out of the basesprite
+then slides in the frame number as indicated by the animation table.
+Release when done. Pretty simple system.
 
 ---
 Under Construction:
 Started experimenting with the stuff underneath the input queues, trying to 
 buff it up a bit so that events are resolved efficiently. Probably need TODO 
-some modifications to the whole iprintf() thing.
+some modifications to the whole iprintf() thing. -- On going part of the below.
 
 Going to build queue resolver for when the thing is spinning the framefunc.
 When a message is resolved we'll place time markers to see how fast the
 engine is actually running. This will be done first probably due to it's 
 simplicity. In essence the queue needs to output the average time between 
-resolving consecutive events.
+resolving consecutive events. - Still working on this built a sort of developers
+console to start this one off.
+
+Resource manager for the 2D engine. Given a table of sprites and associated
+animations (and soon/eventually backgrounds), the resource manager should 
+determine how to load and unload a large amount en masse without disturbing
+current program flow.
 
 ---
 

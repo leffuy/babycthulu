@@ -52,17 +52,12 @@ case BLURENDFUNC: bluRenderFunc=func; break;
 }
 }
 
-
-//Start construction
-//we'll start editing here I'll chuck out these comments when construction is
-//completed
-
-//Lets make the System update the keys every round for starters
-//Then add size functionality to the queue for maintenance and optimization 
-//issues
-//Then I guess create an event handler for each type of even to cut down on
-//dispatching through a switchbaord
-
+//Finished the basic construction. This function starts the Frame and Render 
+//Functions defined by the user. Before every "game cycle" an event is pumped
+//from the message queue that have accumulated during the last cycle and passed
+//to the Frame and Render Functions to handle. Only one event can be handled per
+//cycle on default. Manual calls to pump the queue can be made if the resources
+//are available to resolve whatever msg the engine is making
 void blu_impl::System_Start(){
 for(;;){
 bluVent aVent = this->Input_PumpQueue();
@@ -73,7 +68,6 @@ if(bluRenderFunc) bluRenderFunc(aVent);
 }
 }
 
-//End construction. Make sure to annotate all notes man!
 
 
 
