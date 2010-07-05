@@ -30,6 +30,7 @@ blu_impl::blu_impl(){
 //dummy
 bluFrameFunc = 0;
 bluRenderFunc = 0;
+bWrap = (bluWrapper*)malloc(sizeof(bluWrapper));
 }
 
 //Destroys references until their are no more then completely destroys reference
@@ -40,6 +41,7 @@ bluRenderFunc = 0;
 void blu_impl::Release(){
 bref--;
 if(!bref){
+free(bWrap);
 delete pblu;
 pblu = 0;
 }
@@ -68,7 +70,24 @@ if(bluRenderFunc) bluRenderFunc(aVent);
 }
 }
 
+//Resource Manager
+//This new module is part of the system_wide resource manager
 
+bluWrapper* blu_impl::System_GetWrapperHandle(void){
+return bWrap;
+}
+
+void* blu_impl::System_ResourceFactory(void){
+switch(bWrap->typW){
+case T_SPRITE:
+bluSprite tmp_s = bWrap->sprW;
+bluSprite* tp_spr = (bluSprite*)malloc(sizeof(bluSprite));
+*tp_spr = tmp_s;
+return (void*)tp_spr;
+break;
+}
+return NULL;
+}
 
 
 

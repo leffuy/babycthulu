@@ -65,6 +65,23 @@ u16 flags;
 bluVent* next;
 };
 
+enum bluTypes{
+T_SPRITE = 0,
+T_ANIMATION = 1
+};
+
+struct bluWrapper{
+bluTypes typW;
+bluSprite sprW;
+bluAnimation anW;
+};
+
+struct bluPack{
+bluTypes typW;
+bluSprite* p_spr;
+bluAnimation* p_an;
+};
+
 typedef bool (*bluCallback)(bluVent aVent);
 
 class bcthulu{
@@ -73,6 +90,9 @@ virtual void 	Release() = 0;
 
 virtual void 	System_Start() = 0;
 virtual void 	System_SetFunc(bluCallback func, bluFunc fblu) = 0;
+virtual void*	System_ResourceFactory(void) = 0;
+//virtual bluPack System_PackageResource(void* res, bluTypes bt) = 0;
+virtual bluWrapper* System_GetWrapperHandle(void) = 0;
 
 virtual void 	GFX_Initiate() = 0;
 virtual void 	GFX_LDSprite(bluSprite* bsp) = 0;
