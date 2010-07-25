@@ -72,7 +72,7 @@ case BLURENDFUNC: bluRenderFunc=func; break;
 void blu_impl::System_Start(){
 //initialize the system log with the system start 
 this->blog = (logList*)malloc(sizeof(logList));
-blog->logLine = "system start\n";
+blog->logLine = "system start";
 logTP = blog;
 logSz = 1;
 curLn = 1;
@@ -111,7 +111,7 @@ printf("Segmentation Fault!\n");
 return;
 }
 
-for(int i = 1; i < x; i++){
+for(int i = 1; i <= x; i++){
 frstLn = frstLn->next;
 }
 
