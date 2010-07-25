@@ -1,4 +1,13 @@
+//File: 
 //blu_sys.cpp
+//Author:
+//Stevie Frederick
+//Description:
+//This file/module encapsulates the piece of the interface that implements the
+//system. This includes things like printing to the developer console/log
+//setting up the input queue and other standard initializations, such as calling
+//the user's frame and render function when the main loop starts.
+
 #include <stdio.h>
 #include "blu_impl.h"
 
@@ -61,6 +70,13 @@ case BLURENDFUNC: bluRenderFunc=func; break;
 //cycle on default. Manual calls to pump the queue can be made if the resources
 //are available to resolve whatever msg the engine is making
 void blu_impl::System_Start(){
+//initialize the system log with the system start 
+this->blog = (logList*)malloc(sizeof(logList));
+blog->logLine = "system start\n";
+logTP = blog;
+logSz = 1;
+curLn = 1;
+printf("0.%d %s",curLn,blog->logLine);
 for(;;){
 bluVent aVent = this->Input_PumpQueue();
 //event based handling causes these to hit and get added to history to be dealt
@@ -70,12 +86,74 @@ if(bluRenderFunc) bluRenderFunc(aVent);
 }
 }
 
+//DevConsole
+
+//Issue a msg out to the console and log it for later use with a ln #
+//
+void blu_impl::System_Msg(char const* str){
+logList* newLine = (logList*)malloc(sizeof(logList));
+logTP->next =  newLine;
+logTP->next->logLine = str;
+logSz++;
+curLn++;
+logTP = logTP->next;
+printf("0.%d %s\n",curLn,logTP->logLine);
+}
+
+
+//reprint some lines x through y to the console after clearing it
+void blu_impl::PrintLines(int x, int y){
+consoleClear();
+logList* frstLn = blog;
+
+if(x > logSz || y > logSz){
+printf("Segmentation Fault!\n");
+return;
+}
+
+for(int i = 1; i < x; i++){
+frstLn = frstLn->next;
+}
+
+curLn = x;
+
+for(int i = x; i < y; i++){
+printf("0.%d %s\n",curLn,frstLn->logLine);
+curLn++;
+}
+
+}
+void blu_impl::System_LnUp(void){
+if(logSz <= 23)
+return;
+
+if(curLn > logSz || curLn <=  23)
+return;
+
+PrintLines(curLn-23,curLn-1);
+}
+
+void blu_impl::System_LnDn(void){
+if(logSz <= 23)
+return;
+
+if(curLn > logSz || curLn < 23)
+return;
+
+PrintLines(curLn-21,curLn+1);
+}
+
+
 //Resource Manager
 //This new module is part of the system_wide resource manager
 
+//Note:
+//There is some fucking hackery afloat with this, which means there are memory
+//leaks to be plugged. Resource factory needs a reference counter just like the other internal impl objects.
 bluWrapper* blu_impl::System_GetWrapperHandle(void){
 return bWrap;
 }
+
 
 void* blu_impl::System_ResourceFactory(void){
 switch(bWrap->typW){

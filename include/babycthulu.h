@@ -93,6 +93,9 @@ virtual void 	System_SetFunc(bluCallback func, bluFunc fblu) = 0;
 virtual void*	System_ResourceFactory(void) = 0;
 //virtual bluPack System_PackageResource(void* res, bluTypes bt) = 0;
 virtual bluWrapper* System_GetWrapperHandle(void) = 0;
+virtual void	System_Msg(char const* str) = 0;
+virtual void	System_LnUp() = 0;
+virtual void	System_LnDn() = 0;
 
 virtual void 	GFX_Initiate() = 0;
 virtual void 	GFX_LDSprite(bluSprite* bsp) = 0;

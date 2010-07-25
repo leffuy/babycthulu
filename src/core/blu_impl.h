@@ -3,7 +3,10 @@
 
 #include "../../include/babycthulu.h"
 
-
+struct logList{
+char const* logLine;
+logList* next;
+};
 
 class blu_impl: public bcthulu{
 public:
@@ -14,6 +17,9 @@ virtual void 	 System_SetFunc(bluCallback func, bluFunc fblu);
 virtual void*	 System_ResourceFactory(void);
 //virtual bluPack	 System_PackageResource(void* res, bluTypes bt);
 virtual bluWrapper* System_GetWrapperHandle(void);
+virtual void	 System_Msg(char const* str);
+virtual void	 System_LnUp();
+virtual void	 System_LnDn();
 
 virtual void 	 GFX_Initiate();
 virtual void 	 GFX_LDSprite(bluSprite* bsp);
@@ -32,9 +38,15 @@ virtual int	 Input_KeysHeld();
 virtual void	 Input_PushEvent(bluVent bvent);
 
 
-//impl specific funcs
+//impl 
+//specific 
+//funcs
+
 //Engine init
 static blu_impl* InterfaceGet();
+
+//System
+void PrintLines(int x, int y);
 
 //Input
 void StashQueue();
@@ -46,10 +58,23 @@ bool (*bluFrameFunc)(bluVent aVent);
 bool (*bluRenderFunc)(bluVent aVent);
 
 //types
+//  &
+//things
+
+//input queue
 u16	 qCount;
 bluVent* headpV;
 bluVent* tailpV;
+
+//resource wrapper
 bluWrapper* bWrap;
+
+//log control
+int	 logSz;
+int	 curLn;
+logList* blog;
+logList* logTP;
+
 
 private:
 inline blu_impl();
