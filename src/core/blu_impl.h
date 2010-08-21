@@ -47,6 +47,7 @@ static blu_impl* InterfaceGet();
 
 //System
 void PrintLines(int x, int y);
+void PushToPalBuffs(u16* palData, int chunks);
 
 //Input
 void StashQueue();
@@ -68,6 +69,8 @@ bluVent* tailpV;
 
 //resource wrapper
 bluWrapper* bWrap;
+u16*        palBuf;
+int         palBrk;
 
 //log control
 int	 logSz;

@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include "blu_impl.h"
 
+//Implementation Specific Functions
+
+void blu_impl::PushToPalBuffs(u16* palData, int chunks){
+if(palBuff == NULL) return;
+
+dmaCopy(palData, palBuff, chunks);
+
+palBrk += chunks;
+}
+
 
 //this function initiates video ram for immediate use with sprites
 //There are default settings in here for if you need to do video immediately
@@ -29,7 +39,10 @@ bsp->init = 1;
 }
 
 dmaCopy(bsp->tiles, bsp->gfx, bsp->tlen);
-dmaCopy(bsp->pal, SPRITE_PALETTE, bsp->plen);
+
+//Only loading the sprtie pal works differents
+//dmaCopy(bsp->pal, SPRITE_PALETTE, bsp->plen);
+PushToPalBuffs(bsp->pal, bsp->plen);
 }
 
 void blu_impl::GFX_ULDSprite(bluSprite* bsp){
@@ -44,6 +57,8 @@ bsp->init = 0;
 //Blits sprite defined in bsp if it's been set up into OAM memory via ldsprite
 //TODO: See above
 void blu_impl::GFX_BltSpr(bluSprite* bsp){
+//I think this is a good place to load a master pallette
+dmaCopy(palBuff, SPRITE_PALETTE, palBrk);
 if(bsp->init != 0)
 oamSet(&oamMain,bsp->id,bsp->x,bsp->y,bsp->priority,0,bsp->sz,bsp->sfmt,bsp->gfx,0,false,false,false,false,false);
 oamUpdate(&oamMain);

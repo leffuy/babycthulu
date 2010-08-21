@@ -39,7 +39,9 @@ blu_impl::blu_impl(){
 //dummy
 bluFrameFunc = 0;
 bluRenderFunc = 0;
+palBrk = 0;
 bWrap = (bluWrapper*)malloc(sizeof(bluWrapper));
+palBuff = (u16*)malloc(sizeof(u16)*1016);
 }
 
 //Destroys references until their are no more then completely destroys reference
@@ -51,6 +53,7 @@ void blu_impl::Release(){
 bref--;
 if(!bref){
 free(bWrap);
+free(palBuff);
 delete pblu;
 pblu = 0;
 }
@@ -76,7 +79,7 @@ blog->logLine = "system start";
 logTP = blog;
 logSz = 1;
 curLn = 1;
-printf("0.%d %s",curLn,blog->logLine);
+printf("0.%d %s\n",curLn,blog->logLine);
 for(;;){
 bluVent aVent = this->Input_PumpQueue();
 //event based handling causes these to hit and get added to history to be dealt
@@ -110,11 +113,9 @@ if(x > logSz || y > logSz){
 printf("Segmentation Fault!\n");
 return;
 }
-
-for(int i = 1; i <= x; i++){
+for(int i = 1; i >= x; i++){
 frstLn = frstLn->next;
 }
-
 curLn = x;
 
 for(int i = x; i < y; i++){
@@ -152,6 +153,14 @@ PrintLines(curLn-21,curLn+1);
 //leaks to be plugged. Resource factory needs a reference counter just like the other internal impl objects.
 bluWrapper* blu_impl::System_GetWrapperHandle(void){
 return bWrap;
+}
+
+//The resource list is a giant proc table with so many wrapper based slots
+//available. This is the core of the resource manager. There are 2 queues, the
+//first queue is for pipable resources. Such as log lines and 
+void blu_impl::System_QueueResource(bluWrapper rap){
+
+
 }
 
 
